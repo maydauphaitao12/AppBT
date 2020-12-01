@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/in_time1"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:hint="Arlam" />
+
+        <Button
+            android:id="@+id/btn_time1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/in_time1"
+            android:text="SELECT TIME" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/in_time1">
+
+        <RadioButton
+            android:id="@+id/radio_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:onClick="checkButton"
+            android:text="Turn On" />
+
+        <RadioButton
+            android:id="@+id/radio_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkButton"
+            android:text="Turn Off" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:text="Send" />
+
+    <TextView
+        android:id="@+id/response2"
+        android:layout_width="251dp"
+        android:layout_height="190dp"
+        android:layout_below="@+id/time_up"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+
+
+</LinearLayout>

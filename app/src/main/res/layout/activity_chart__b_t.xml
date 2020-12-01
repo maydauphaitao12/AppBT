@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Chart_BT">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        >
+
+        <Button
+            android:id="@+id/date_bt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_change"
+            android:text="DATE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/response" />
+
+        <Button
+            android:id="@+id/week_bt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_change"
+            android:text="WEEK"
+            app:layout_constraintStart_toEndOf="@+id/led1"
+            app:layout_constraintTop_toBottomOf="@+id/response" />
+
+        <Button
+            android:id="@+id/month_bt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_change"
+            android:gravity="center"
+            android:text="MONTH"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/response" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/response1"
+        android:layout_width="251dp"
+        android:layout_height="190dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barchart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
