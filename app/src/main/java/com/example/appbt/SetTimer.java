@@ -79,6 +79,7 @@ public class SetTimer extends AppCompatActivity implements View.OnClickListener 
         txtTimer = new EditText[]{txtTime, txtTime1};
         radioGroup = findViewById(R.id.radioGroup);
         radio_on = findViewById(R.id.radio_on);
+        radio_off = findViewById(R.id.radio_off);
 
         Button buttonApply = findViewById(R.id.button_apply);
 
@@ -101,12 +102,24 @@ public class SetTimer extends AppCompatActivity implements View.OnClickListener 
 
         buttonApply.setOnClickListener(v -> {
             //        /*{cmd_type:1, "cmd":1, "hour":17, "minutes":10, "second":0}*/
+            int cmdType;
 
-            int cmdType = radio_on.isChecked() ? 1 : 2;
+            cmdType = radio_on.isChecked() ? 1 : 2;
 
+            //nút turn off
             String sendTime = getTimeString(cmdType, 1, hourTimer, minuteTimer, 0);
             Log.e("Char send", sendTime);
             btt.write(sendTime.getBytes());
+
+            //nút turn on
+            cmdType = radio_off.isChecked() ? 1 : 2;
+
+            sendTime = getTimeString(cmdType, 1, hourTimer, minuteTimer, 0);
+            Log.e("Char send", sendTime);
+            btt.write(sendTime.getBytes());
+
+
+
         });
     }
 
@@ -120,25 +133,6 @@ public class SetTimer extends AppCompatActivity implements View.OnClickListener 
             }
         };
     }
-//    private void processMessage(String text){
-//        /*{cmd_type:1, "cmd":1, "hour":17, "minutes":10, "second":0}*/
-//        try {
-//            JSONObject jsonObject = new JSONObject(text);
-//            int cmdType = jsonObject.getInt("cmd_type");
-//
-//            if (cmdType == 1){
-//                int devIndex = jsonObject.getInt("dev");
-//                int hour = jsonObject.getInt("");
-//                int totalMinute_dev = hour*60;
-//
-//
-//            }
-//
-//        }
-//        catch (JSONException e){
-//            e.printStackTrace();
-//        }
-//    }
 
     public void onClick(View v) {
     }

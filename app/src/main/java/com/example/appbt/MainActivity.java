@@ -1,13 +1,19 @@
 package com.example.appbt;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -27,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     BluetoothAdapter bta = null;
-    Button led2, led1, led3,connect, show_all,time_bt;
+    Button led2, led1, led3, connect, show_all, time_bt;
     TextView response;
     View home_home;
     ViewGroup tContainer;
@@ -45,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
     public String getCmdString(int value) {
         return "{\"cmd_type\":0,\"cmd\":" + value + "}";
     }
+
     public String getTypeString(int cmdType) {
         return "{\"cmd_type\": " + cmdType + "}";
     }
-
 
 
     @Override
@@ -109,31 +120,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
         LedState();
-
         bta = BluetoothAdapter.getDefaultAdapter();
-
         //if bluetooth is not enabled then create Intent for user to turn it on
         if (!bta.isEnabled()) {
+
             Intent enableBTIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT);
         }
     }
 
-    public void LedState(){
+
+    public void LedState() {
         for (int i = 0; i < ledBtnArr.length; i++) {
             Button led = ledBtnArr[i];
             int finalI = i;
             led.setOnClickListener(v -> {
+
                 if (!btt.isConnected()) {
                     Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 boolean isOn = ledStateArr[finalI];
                 int code = isOn ? finalI * 2 + 2 : finalI * 2 + 1;
                 String sendtxt = getCmdString(code);
                 btt.write(sendtxt.getBytes());
                 ledStateArr[finalI] = !isOn;
                 led.setText("Led " + (finalI + 1) + " " + (isOn ? "OFF" : "ON"));
+
             });
         }
     }
@@ -146,8 +160,30 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 String txt = (String) msg.obj;
                 response.append("\n" + txt);
+                Log.e("createMessageListener", txt);
+                processMessage(txt);
             }
         };
+    }
+
+    private void processMessage(String text) {
+        try {
+            JSONObject jsonObject = new JSONObject(text);
+            int cmdType = jsonObject.getInt("cmd_type");
+            if (cmdType == 0) {
+                JSONArray jsonArray = jsonObject.getJSONArray("state");
+                int ch1 = jsonArray.getInt(0);
+                int ch2 = jsonArray.getInt(1);
+                int ch3 = jsonArray.getInt(2);
+
+                led1.setText("Led 1 " + (ch1 == 2 ? "OFF" : "ON"));
+                led2.setText("Led 2 " + (ch2 == 4 ? "OFF" : "ON"));
+                led3.setText("Led 3 " + (ch3 == 6 ? "OFF" : "ON"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,6 +204,9 @@ public class MainActivity extends AppCompatActivity {
 
                     btt.connect(getApplicationContext(), MAC);
                     home_home.setVisibility(View.VISIBLE);
+
+                    btt.write(getTypeString(3).getBytes());
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Unable to connect", Toast.LENGTH_SHORT).show();
                 }
